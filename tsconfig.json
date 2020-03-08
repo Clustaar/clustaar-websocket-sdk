@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "clustaar-webchat-sdk": [
+        "dist/clustaar-webchat-sdk"
+      ],
+      "clustaar-webchat-sdk/*": [
+        "dist/clustaar-webchat-sdk/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
