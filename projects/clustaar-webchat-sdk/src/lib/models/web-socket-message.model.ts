@@ -1,7 +1,10 @@
 export interface InterlocutorReplyMessage {
     token: string;
     params?: any;
-    body?: any;
+    body?: {
+      type: string,
+      message: string
+    };
 }
 
 export interface BotReplyMessage {
