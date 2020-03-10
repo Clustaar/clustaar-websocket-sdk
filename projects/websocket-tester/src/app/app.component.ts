@@ -88,15 +88,10 @@ export class AppComponent {
     });
   }
 
-  joinAnotherChannel() {
-
-  }
-
   leave() {
     this.interlocutorChannel.leave().subscribe(() => {
       this.interlocutorChannelSubject.next();
       this.interlocutorChannelSubject.complete();
     });
-
   }
 }
