@@ -2,15 +2,16 @@ import { Socket } from 'phoenix';
 import { WebChannel } from './web-channel';
 import { Observable } from 'rxjs';
 
+// @dynamic
 export class Websocket {
-
-  private _socket: Socket;
 
   private static instance: Websocket;
 
+  private _socket: Socket;
+
   /** Singleton pattern in order to avoid to
    * open multiple socket at the same time **/
-  private constructor() {
+  constructor() {
   }
 
   static getInstance(): Websocket {
@@ -33,7 +34,7 @@ export class Websocket {
     console.log(this._socket.connectionState());
     if (this._socket) {
       this._socket.disconnect(() => {
-        console.log("disconnected");
+        console.log('disconnected');
         console.log(this._socket.connectionState());
       });
     }
@@ -52,7 +53,7 @@ export class Websocket {
       });
       this._socket.onMessage(() => {
         observer.next('message');
-      })
+      });
     });
   }
 }
