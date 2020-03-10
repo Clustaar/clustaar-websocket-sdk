@@ -2,6 +2,7 @@ import { Socket } from 'phoenix';
 import { WebChannel } from './web-channel';
 import { Observable } from 'rxjs';
 
+// @dynamic
 export class WebSocket {
 
   private static instance: WebSocket;
