@@ -26,7 +26,7 @@ export class WebChannel {
     return this.on<InterlocutorReplyMessage>('interlocutor_reply');
   }
 
-  onControl(): Observable<ControlMessage> {
+  onControlTaken(): Observable<ControlMessage> {
     return this.on<ControlMessage>('control');
   }
 

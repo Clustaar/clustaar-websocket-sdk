@@ -11,7 +11,8 @@ export interface InterlocutorReplyMessage {
   };
   body?: {
     type: string,
-    message: string
+    message?: string
+    name?: string
   };
 }
 

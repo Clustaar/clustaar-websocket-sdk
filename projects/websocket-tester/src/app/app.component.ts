@@ -99,7 +99,7 @@ export class AppComponent {
         console.log(interlocutorReply, 'interlocutorReply');
       });
 
-      this.interlocutorChannel.onControl().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((control) => {
+      this.interlocutorChannel.onControlTaken().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((control) => {
         this.control = control.value;
       });
     });

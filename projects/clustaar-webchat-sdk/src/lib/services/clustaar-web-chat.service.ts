@@ -20,17 +20,13 @@ export class ClustaarWebChatService {
     WebSocket.getInstance().disconnect();
   }
 
-  interlocutorChannel(params: { botID: string, interlocutorID: string, socketToken: string }): WebChannel {
-    const topic = `interlocutor:${params.interlocutorID}`;
-    return this.channel(topic, { bot_id: params.botID, socketToken: params.socketToken });
-  }
-
-  channel(topic: string, params: { bot_id: string, socketToken: string }): WebChannel {
-    return WebSocket.getInstance().channel(topic, params);
-  }
-
   onConnectionState(): Observable<WebSocketState> {
     return WebSocket.getInstance().onConnectionState();
+  }
+
+  interlocutorChannel(params: { botID: string, interlocutorID: string, socketToken: string }): WebChannel {
+    const topic = `interlocutor:${params.interlocutorID}`;
+    return WebSocket.getInstance().channel(topic, { bot_id: params.botID, socketToken: params.socketToken });
   }
 
 }
