@@ -1,8 +1,8 @@
 {
   "name": "clustaar-webchat-sdk",
-  "version": "0.0.1",
-  "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14"
+  "version": "1.0.0-rc1",
+  "dependencies": {
+    "phoenix": "1.4.15",
+    "rxjs": "~6.5.4"
   }
 }

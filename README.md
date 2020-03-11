@@ -1,27 +1,94 @@
-# ClustaarWebsocketSdk
+# Clustaar Websocket Sdk
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.8.
+Clustaar Websocket SDK is a Javascript library to simply the implementation of websocket communication between your application and Clustaar API. 
 
-## Development server
+This library encapsulate technical and business logic of Clustaar Chatbot Take Control feature.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* Official website: [clustaar.com/](https://clustaar.com/)
+* Developer documentation: [clustaar.com/developpers/](https://clustaar.com/developpers/)
+* API Documentation: [docs.bots.clustaar.com/](http://docs.bots.clustaar.com/)
 
-## Code scaffolding
+## Table of contents
+* [Infrastructure](#infrastructure)
+* [Installation](#installation)
+* [How to Use](#how-to-use)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Infrastructure
 
-## Build
+![Clustaar Websocket communication schema](docs/assets/schema.png "Clustaar Websocket communication schema")
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+This project is created with:
+* Elixir Phoenix framework: [phoenixframework.org/](https://www.phoenixframework.org/)
+* RxJS: [rxjs.dev/](https://rxjs.dev/)
 
-## Running unit tests
+## Installation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm install clustaar-webchat-sdk --save`
 
-## Running end-to-end tests
+## How to Use
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Initiate Web Socket connection
 
-## Further help
+```javascript
+import { ClustaarWebChatService } from 'clustaar-webchat-sdk';
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+const service = new ClustaarWebChatService({
+    environment: URL
+});
+service.connect()
+```
+
+### Joining a Channel
+
+```javascript
+const channel = service.interlocutorChannel({
+  botID: BOT_ID,
+  interlocutorID: INTERLOCUTOR_ID,
+  socketToken: SOCKET_TOKEN
+});
+
+channel.join().subscribe((status) => {
+})
+````
+
+### Send an Interlocutor Reply
+
+```javascript
+channel.sendReply(BOT_TOKEN, { type: 'text', message: 'Hello World' });
+````
+
+### Send an Custom Event
+
+```javascript
+channel.sendReply(BOT_TOKEN, { type: 'custom_event', name: 'My Custom Event' });
+````
+
+
+### Listening Channel events
+
+```javascript
+// Listening Bot Replies
+channel.onBotReply().subscribe((botReply) => {
+});
+
+// Listening Agent Replies
+channel.onAgentReply().subscribe((agentReply) => {
+});
+
+// Listening Interlocutor Replies
+channel.onInterlocutorReply().subscribe((interlocutorReply) => {
+});
+
+// Listening Control Taken Events
+channel.onControlTaken().subscribe((controlTaken) => {
+});
+```
+
+### Listening Web Socket events
+
+```javascript
+// State can be : 'open', 'close' or 'error'
+service.onConnectionState().subscribe((state) => {
+});
+````
+
