@@ -52,8 +52,8 @@ export class WebChannel {
     });
   }
 
-  sendReply(data: InterlocutorReplyMessage | CustomEventReplyMessage): void {
-    this.channel.push('interlocutor_reply', data);
+  sendReply(token: string, data: InterlocutorReplyMessage | CustomEventReplyMessage, debug: 0 | 1 = 0): void {
+    this.channel.push('interlocutor_reply', { token, params: { debug }, body: data });
   }
 
   private on<T>(event: string): Observable<T> {

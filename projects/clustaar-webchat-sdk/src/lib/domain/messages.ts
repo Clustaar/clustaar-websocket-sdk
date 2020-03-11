@@ -1,101 +1,81 @@
-interface ReplyMessage {
-  token: string;
-  params?: {
-    display: boolean,
-    debug: number
-  };
+export interface InterlocutorReplyMessage {
+  type: string;
+  message: string;
 }
 
-export interface InterlocutorReplyMessage extends ReplyMessage {
-  body: {
-    type: string,
-    message: string
-  };
-}
-
-export interface CustomEventReplyMessage extends ReplyMessage {
-  body: {
-    type: string,
-    name: string
-  };
+export interface CustomEventReplyMessage {
+  type: string;
+  name: string;
 }
 
 export interface BotReplyMessage {
-  body: {
-    data: {
-      debug?: {
-        intentDetections: {
+  debug?: {
+    intentDetections: {
+      type: string,
+      query: string,
+      results: [
+        {
           type: string,
-          query: string,
-          results: [
-            {
-              type: string,
-              intent: {
-                id: string,
-                name: string
-              },
-              score: number,
-              parameters: [
-                {
-                  name: string,
-                  value: string
-                }
-              ]
-            }
-          ]
-        }[],
-        webhookCalls?: {
-          request: {
-            method: string,
-            url: string,
-            body: string
-          },
-          response: {
-            status: number,
-            body: string
-          },
-          error: string
-        }[],
-        logs?: {
-          type: string,
-          level: string,
-          message: string,
-          createdAt: string
-        }[]
-      },
-      fulfillment: {
-        actions: [],
-        source: {
-          type: string,
-          step: {
-            type: string,
+          intent: {
             id: string,
             name: string
-          }
+          },
+          score: number,
+          parameters: [
+            {
+              name: string,
+              value: string
+            }
+          ]
         }
+      ]
+    }[],
+    webhookCalls?: {
+      request: {
+        method: string,
+        url: string,
+        body: string
       },
-      input: {
-        type: string
-        message: string,
-      }
-      interlocutor: {
-        type: string
+      response: {
+        status: number,
+        body: string
+      },
+      error: string
+    }[],
+    logs?: {
+      type: string,
+      level: string,
+      message: string,
+      createdAt: string
+    }[]
+  };
+  fulfillment: {
+    actions: [],
+    source: {
+      type: string,
+      step: {
+        type: string,
         id: string,
-      },
-      session: {
-        values: {}
+        name: string
       }
     }
   };
-  status: number;
-}
-
-export interface AgentReplyMessage {
-  body: {
+  input: {
     type: string
     message: string,
   };
-  timestamp: number;
+  interlocutor: {
+    type: string
+    id: string,
+  };
+  session: {
+    values: {}
+  };
+}
+
+export interface AgentReplyMessage {
+  type: string;
+  message: string;
 }
 
 export interface ControlTakenMessage {

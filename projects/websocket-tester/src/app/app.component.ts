@@ -4,6 +4,7 @@ import { InterlocutorReplyMessage } from '../../../clustaar-webchat-sdk/src/lib/
 import { WebChannel } from '../../../clustaar-webchat-sdk/src/lib/domain/web-channel';
 import { interval, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -16,90 +17,64 @@ import { takeUntil } from 'rxjs/operators';
       <button (click)="sendMessage(message.value)">send</button>
       <button (click)="join()">join</button>
       <button (click)="leave()">leave</button>
-      <button (click)="disconnect()">disconnect</button>
-      <button (click)="connect()">connect</button>
+      <button (click)="service.disconnect()">disconnect</button>
+      <button (click)="service.connect()">connect</button>
     </div>`
 })
 export class AppComponent {
-  botID = '5b50b57f64a5470032c98636';
-  botToken = 'eyJ2YWx1ZSI6ImpncGVmcWh6S1BQUkJBdE1YSHRDYXFyLXJ5blFYU3B0QUZ2LVJFemoxQ00iLCJzdWJqZWN0Ijp7InR5cGUiOiJib3QiLCJpZCI6IjViNTBiNTdmNjRhNTQ3MDAzMmM5ODYzNiJ9fQ==';
-  interlocutorID = '5e398d3857d5f3000b82e4c0';
-  socketToken = 'melosockmelosockmelosockmelosockmelosockmelosockmelosockmelosockmelosockmelosock';
+
+  interlocutorChannelSubject$: Subject<any>;
+
   interlocutorChannel: WebChannel;
-  clustaarWebchatSdkService: ClustaarWebChatService = new ClustaarWebChatService({
-    environment: 'wss://sockets.staging.clustaar.io/socket'
-  });
-  interlocutorChannelSubject: Subject<any>;
+  service: ClustaarWebChatService;
   state: string;
   control: boolean;
 
   connected: boolean;
 
   constructor() {
-
-    this.connect();
-
-    this.clustaarWebchatSdkService.onConnectionState().subscribe((state) => {
+    this.service = new ClustaarWebChatService({
+      environment: environment.URL
+    });
+    this.service.connect();
+    this.service.onConnectionState().subscribe((state) => {
       this.state = state;
     });
-
-    interval(1000).subscribe(() => {
-      this.connected = this.clustaarWebchatSdkService.isConnected();
+    interval(500).subscribe(() => {
+      this.connected = this.service.isConnected();
     });
-
     this.join();
-
   }
 
-  sendMessage(message) {
-    const interlocutorMessage: InterlocutorReplyMessage = {
-      token: this.botToken,
-      params: {
-        display: true,
-        debug: 1
-      },
-      body: {
-        type: 'text',
-        message
-      }
-    };
-
-    this.interlocutorChannel.sendReply(interlocutorMessage);
-  }
-
-  connect() {
-    this.clustaarWebchatSdkService.connect();
-  }
-
-  disconnect() {
-    this.clustaarWebchatSdkService.disconnect();
+  sendMessage(message: string) {
+    const reply: InterlocutorReplyMessage = { type: 'text', message };
+    this.interlocutorChannel.sendReply(environment.botToken, reply);
   }
 
   join() {
-
-    this.interlocutorChannel = this.clustaarWebchatSdkService.interlocutorChannel({
-      botID: this.botID,
-      interlocutorID: this.interlocutorID,
-      socketToken: this.socketToken
+    this.interlocutorChannel = this.service.interlocutorChannel({
+      botID: environment.botID,
+      interlocutorID: environment.interlocutorID,
+      socketToken: environment.socketToken
     });
 
-    this.interlocutorChannelSubject = new Subject();
-    this.interlocutorChannel.join().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((status) => {
+    this.interlocutorChannelSubject$ = new Subject();
+    this.interlocutorChannel.join().pipe(takeUntil(this.interlocutorChannelSubject$)).subscribe((status) => {
       this.control = status.control;
 
-      this.interlocutorChannel.onBotReply().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((botReply) => {
+      this.interlocutorChannel.onBotReply().pipe(takeUntil(this.interlocutorChannelSubject$)).subscribe((botReply) => {
         console.log(botReply, 'botReply');
       });
 
-      this.interlocutorChannel.onAgentReply().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((agentReply) => {
+      this.interlocutorChannel.onAgentReply().pipe(takeUntil(this.interlocutorChannelSubject$)).subscribe((agentReply) => {
         console.log(agentReply, 'agentReply');
       });
 
-      this.interlocutorChannel.onInterlocutorReply().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((interlocutorReply) => {
+      this.interlocutorChannel.onInterlocutorReply().pipe(takeUntil(this.interlocutorChannelSubject$)).subscribe((interlocutorReply) => {
         console.log(interlocutorReply, 'interlocutorReply');
       });
 
-      this.interlocutorChannel.onControlTaken().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((control) => {
+      this.interlocutorChannel.onControlTaken().pipe(takeUntil(this.interlocutorChannelSubject$)).subscribe((control) => {
         this.control = control.value;
       });
     });
@@ -107,8 +82,8 @@ export class AppComponent {
 
   leave() {
     this.interlocutorChannel.leave().subscribe(() => {
-      this.interlocutorChannelSubject.next();
-      this.interlocutorChannelSubject.complete();
+      this.interlocutorChannelSubject$.next();
+      this.interlocutorChannelSubject$.complete();
     });
   }
 }
