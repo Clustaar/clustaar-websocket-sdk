@@ -34,9 +34,7 @@ export class WebSocket {
   }
 
   isConnected(): boolean {
-    if (this.socket) {
-      return this.socket.isConnected();
-    }
+    return this.socket ? this.socket.isConnected() : false;
   }
 
   channel(topic: string, params: { bot_id: string, socketToken: string }): WebChannel {

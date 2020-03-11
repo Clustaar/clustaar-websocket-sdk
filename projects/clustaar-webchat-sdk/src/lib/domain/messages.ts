@@ -18,13 +18,67 @@ export interface InterlocutorReplyMessage {
 export interface BotReplyMessage {
   body: {
     data: {
+      debug?: {
+        intentDetections: {
+          type: string,
+          query: string,
+          results: [
+            {
+              type: string,
+              intent: {
+                id: string,
+                name: string
+              },
+              score: number,
+              parameters: [
+                {
+                  name: string,
+                  value: string
+                }
+              ]
+            }
+          ]
+        }[],
+        webhookCalls?: {
+          request: {
+            method: string,
+            url: string,
+            body: string
+          },
+          response: {
+            status: number,
+            body: string
+          },
+          error: string
+        }[],
+        logs?: {
+          type: string,
+          level: string,
+          message: string,
+          createdAt: string
+        }[]
+      },
+      fulfillment: {
+        actions: [],
+        source: {
+          type: string,
+          step: {
+            type: string,
+            id: string,
+            name: string
+          }
+        }
+      },
       input: {
-        message: string,
         type: string
+        message: string,
       }
       interlocutor: {
-        id: string,
         type: string
+        id: string,
+      },
+      session: {
+        values: {}
       }
     }
   };
@@ -33,8 +87,8 @@ export interface BotReplyMessage {
 
 export interface AgentReplyMessage {
   body: {
-    message: string,
     type: string
+    message: string,
   };
   timestamp: number;
 }
