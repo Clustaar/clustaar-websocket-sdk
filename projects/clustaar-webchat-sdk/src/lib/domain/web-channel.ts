@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import {
   AgentReplyMessage,
   BotReplyMessage,
-  ControlMessage,
+  ControlTakenMessage,
+  CustomEventReplyMessage,
   InterlocutorReplyMessage,
   JoinStatusMessage
 } from './messages';
-
 
 export class WebChannel {
 
@@ -26,8 +26,8 @@ export class WebChannel {
     return this.on<InterlocutorReplyMessage>('interlocutor_reply');
   }
 
-  onControlTaken(): Observable<ControlMessage> {
-    return this.on<ControlMessage>('control');
+  onControlTaken(): Observable<ControlTakenMessage> {
+    return this.on<ControlTakenMessage>('control');
   }
 
   join(): Observable<JoinStatusMessage> {
@@ -52,12 +52,8 @@ export class WebChannel {
     });
   }
 
-  sendReply(data: InterlocutorReplyMessage): void {
-    this.emit('interlocutor_reply', data);
-  }
-
-  private emit(event: string, data?: InterlocutorReplyMessage): void {
-    this.channel.push(event, data);
+  sendReply(data: InterlocutorReplyMessage | CustomEventReplyMessage): void {
+    this.channel.push('interlocutor_reply', data);
   }
 
   private on<T>(event: string): Observable<T> {

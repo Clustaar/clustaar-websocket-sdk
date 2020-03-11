@@ -1,18 +1,22 @@
-export interface JoinStatusMessage {
-  status: string;
-  control: boolean;
-}
-
-export interface InterlocutorReplyMessage {
+interface ReplyMessage {
   token: string;
   params?: {
     display: boolean,
     debug: number
   };
-  body?: {
+}
+
+export interface InterlocutorReplyMessage extends ReplyMessage {
+  body: {
     type: string,
-    message?: string
-    name?: string
+    message: string
+  };
+}
+
+export interface CustomEventReplyMessage extends ReplyMessage {
+  body: {
+    type: string,
+    name: string
   };
 }
 
@@ -94,7 +98,13 @@ export interface AgentReplyMessage {
   timestamp: number;
 }
 
-export interface ControlMessage {
+export interface ControlTakenMessage {
   at: number;
   value: boolean;
 }
+
+export interface JoinStatusMessage {
+  status: string;
+  control: boolean;
+}
+
