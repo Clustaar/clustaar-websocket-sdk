@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { ClustaarWebChatService } from '../../../clustaar-webchat-sdk/src/lib/services/clustaar-web-chat.service';
 import { InterlocutorReplyMessage } from '../../../clustaar-webchat-sdk/src/lib/domain/messages';
 import { WebChannel } from '../../../clustaar-webchat-sdk/src/lib/domain/web-channel';
-import { Subject } from 'rxjs';
+import { interval, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   template: `
     <div><span>State : {{state}}</span></div>
+    <div><span>Connected : {{connected}}</span></div>
     <div><span>Control : {{control}}</span></div>
     <div>
       <input #message type="text" value="">
@@ -32,12 +33,18 @@ export class AppComponent {
   state: string;
   control: boolean;
 
+  connected: boolean;
+
   constructor() {
 
     this.connect();
 
     this.clustaarWebchatSdkService.onConnectionState().subscribe((state) => {
       this.state = state;
+    });
+
+    interval(1000).subscribe(() => {
+      this.connected = this.clustaarWebchatSdkService.isConnected();
     });
 
     this.join();

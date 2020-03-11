@@ -1,11 +1,15 @@
 import { Configuration } from '../domain/configuration';
-import { WebSocket } from '../domain/web-socket';
+import { WebSocket, WebSocketState } from '../domain/web-socket';
 import { WebChannel } from '../domain/web-channel';
 import { Observable } from 'rxjs';
 
 export class ClustaarWebChatService {
 
   constructor(private configuration: Configuration) {
+  }
+
+  isConnected(): boolean {
+    return WebSocket.getInstance().isConnected();
   }
 
   connect(): void {
@@ -25,7 +29,7 @@ export class ClustaarWebChatService {
     return WebSocket.getInstance().channel(topic, params);
   }
 
-  onConnectionState(): Observable<string> {
+  onConnectionState(): Observable<WebSocketState> {
     return WebSocket.getInstance().onConnectionState();
   }
 

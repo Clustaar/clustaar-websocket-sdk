@@ -2,6 +2,8 @@ import { Socket } from 'phoenix';
 import { WebChannel } from './web-channel';
 import { Observable } from 'rxjs';
 
+export type WebSocketState = 'open' | 'close' | 'error';
+
 // @dynamic
 export class WebSocket {
 
@@ -20,10 +22,6 @@ export class WebSocket {
     return WebSocket.instance;
   }
 
-  channel(topic: string, params: { bot_id: string, socketToken: string }): WebChannel {
-    return new WebChannel(this.socket.channel(topic, params));
-  }
-
   connect(environment: string): void {
     this.socket = new Socket(environment);
     this.socket.connect();
@@ -35,7 +33,17 @@ export class WebSocket {
     }
   }
 
-  onConnectionState(): Observable<string> {
+  isConnected(): boolean {
+    if (this.socket) {
+      return this.socket.isConnected();
+    }
+  }
+
+  channel(topic: string, params: { bot_id: string, socketToken: string }): WebChannel {
+    return new WebChannel(this.socket.channel(topic, params));
+  }
+
+  onConnectionState(): Observable<WebSocketState> {
     return new Observable(observer => {
       this.socket.onOpen(() => {
         observer.next('open');
