@@ -4,7 +4,6 @@ import {
   AgentReplyMessage,
   BotReplyMessage,
   ControlTakenMessage,
-  CustomEventReplyMessage,
   InterlocutorReplyMessage,
   JoinStatusMessage
 } from './messages';
@@ -52,7 +51,7 @@ export class WebChannel {
     });
   }
 
-  sendReply(token: string, data: InterlocutorReplyMessage | CustomEventReplyMessage, debug: 0 | 1 = 0, display: boolean = true): void {
+  sendReply(token: string, data: InterlocutorReplyMessage, debug: 0 | 1 = 0, display: boolean = true): void {
     this.channel.push('interlocutor_reply', { token, params: { debug, display }, body: data });
   }
 

@@ -1,11 +1,10 @@
 export interface InterlocutorReplyMessage {
   type: string;
-  message: string;
-}
-
-export interface CustomEventReplyMessage {
-  type: string;
-  name: string;
+  message?: string;
+  target?: any;
+  action?: any;
+  event?: any;
+  name?: any;
 }
 
 export interface BotReplyMessage {
