@@ -54,13 +54,13 @@ channel.join().subscribe((status) => {
 ### Send an Interlocutor Reply
 
 ```javascript
-channel.sendReply(BOT_TOKEN, { type: 'text', message: 'Hello World' });
+channel.sendReply(BOT_TOKEN, { type: 'text', message: 'Hello World', channel : 'clustaar_web_chat' });
 ````
 
 ### Send an Custom Event
 
 ```javascript
-channel.sendReply(BOT_TOKEN, { type: 'custom_event', name: 'My Custom Event' });
+channel.sendReply(BOT_TOKEN, { type: 'custom_event', name: 'My Custom Event', channel : 'clustaar_web_chat'});
 ````
 
 

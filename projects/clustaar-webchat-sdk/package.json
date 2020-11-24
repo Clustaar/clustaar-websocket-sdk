@@ -1,6 +1,6 @@
 {
   "name": "clustaar-webchat-sdk",
-  "version": "1.0.0-rc3",
+  "version": "1.0.0-rc4",
   "dependencies": {
     "phoenix": "1.4.15",
     "rxjs": "~6.5.4"
