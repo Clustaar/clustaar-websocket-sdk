@@ -6,14 +6,12 @@ export type WebSocketState = 'open' | 'close' | 'error';
 
 // @dynamic
 export class WebSocket {
-
   private static instance: WebSocket;
 
   private socket: Socket;
 
   // Singleton pattern in order to avoid to open multiple socket at the same time
-  private constructor() {
-  }
+  private constructor() {}
 
   static getInstance(): WebSocket {
     if (!WebSocket.instance) {
@@ -37,12 +35,15 @@ export class WebSocket {
     return this.socket ? this.socket.isConnected() : false;
   }
 
-  channel(topic: string, params: { bot_id: string, socketToken: string }): WebChannel {
+  channel(
+    topic: string,
+    params: { bot_id: string; socketToken: string; origin?: string }
+  ): WebChannel {
     return new WebChannel(this.socket.channel(topic, params));
   }
 
   onConnectionState(): Observable<WebSocketState> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       this.socket.onOpen(() => {
         observer.next('open');
       });
