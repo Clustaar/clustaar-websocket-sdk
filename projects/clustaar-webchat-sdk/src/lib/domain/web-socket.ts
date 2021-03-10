@@ -11,7 +11,8 @@ export class WebSocket {
   private socket: Socket;
 
   // Singleton pattern in order to avoid to open multiple socket at the same time
-  private constructor() {}
+  private constructor() {
+  }
 
   static getInstance(): WebSocket {
     if (!WebSocket.instance) {
@@ -35,10 +36,7 @@ export class WebSocket {
     return this.socket ? this.socket.isConnected() : false;
   }
 
-  channel(
-    topic: string,
-    params: { bot_id: string; socketToken: string; origin?: string }
-  ): WebChannel {
+  channel(topic: string, params: { bot_id: string; socketToken: string; origin?: string, isLogged?: boolean }): WebChannel {
     return new WebChannel(this.socket.channel(topic, params));
   }
 
