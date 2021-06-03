@@ -48,7 +48,7 @@ export class AppComponent {
 
   sendMessage(message: string) {
     const reply: InterlocutorReplyMessage = { type: 'text', message };
-    this.interlocutorChannel.sendReply(environment.botToken, reply);
+    this.interlocutorChannel.sendReply(environment.botToken, reply, 0, true, 'test');
   }
 
   join() {
