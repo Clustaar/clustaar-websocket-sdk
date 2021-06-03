@@ -21,7 +21,7 @@
     "@angular/router": "~8.2.9",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
-    "phoenix": "^1.4.9",
+    "phoenix": "1.5.9",
     "rxjs": "~6.5.4"
   },
   "devDependencies": {
@@ -47,7 +47,7 @@
     "tsickle": "^0.37.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",
-    "@types/phoenix": "^1.4.2"
+    "@types/phoenix": "1.5.1"
   },
   "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.8.",
   "main": "index.js",
