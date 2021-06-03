@@ -23,16 +23,18 @@ export class ClustaarWebChatService {
   }
 
   interlocutorChannel(params: {
-    botID: string;
-    interlocutorID: string;
-    socketToken: string;
-    origin?: string;
+    botID: string,
+    interlocutorID: string,
+    socketToken: string,
+    origin?: string,
+    isLogged?: boolean
   }): WebChannel {
     const topic = `interlocutor:${params.interlocutorID}`;
     return WebSocket.getInstance().channel(topic, {
       bot_id: params.botID,
       socketToken: params.socketToken,
-      origin: params.origin
+      origin: params.origin,
+      isLogged: params.isLogged
     });
   }
 }
